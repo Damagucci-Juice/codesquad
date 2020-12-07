@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <h2>rubix cube (step1)</h2>
+    <script>
+        rubix = {};
+        rubix.word = [];
+        rubix.moveCount = "";
+        rubix.direction = "";
+        rubix.discriminate = function(word, count, direction) {
+            var isWord = false;
+            var isCount = false;
+            var isDirection = false;
+            for (var i = 0; i < this.word.length; i++) {
+                if (this.word[i] !== ' ') {
+                    isWord = true;
+                }
+            }
+            if (count >= -100 && count < 100) {
+                var isCount = true;
+            }
+            if ((direction === "l" || direction === "L") || (direction === "r" || direction === "R" )) {
+                isDirection = true;
+            }
+            if (isCount && isCount && isDirection) {
+                return true;
+            } else {
+                alert("다시 입력하세요.");
+                this.input();
+            }
+        };
+        rubix.input = function () {
+            var wordInput = prompt("Input a word.");
+            var countInput = Number(prompt("How many moves you want??"));
+            var directionInput = prompt("which way do you want? `Input L(l) or R(r)`.");
+            this.word = wordInput.split('');
+            this.moveCount = countInput;
+            this.direction = directionInput;
+            return wordInput;
+        };
+        rubix.calculate = function() {
+            if (this.moveCount >= 0) {
+                if (this.direction === "l" || this.direction === "L") {
+                    var result = this.moveLeft(this.word, this.moveCount);
+                } else { 
+                    var result = this.moveRight(this.word, this.moveCount);
+                }
+            } else {
+                if (this.direction === "l" || this.direction === "L") {
+                    var result = this.moveRight(this.word, this.moveCount);
+                } else { 
+                    var result = this.moveLeft(this.word, this.moveCount);
+                }
+            }
+            return result;
+        };
+        rubix.moveLeft = function(word, num) {
+            var moveCount = Math.abs(num);
+            var afterWord = word;
+            for (var i = 0; i < moveCount; i++) {
+                var x = afterWord.shift();
+                afterWord.push(x);
+            }
+            return afterWord;
+        };
+        rubix.moveRight = function(word, num) {
+            var moveCount = Math.abs(num);
+            var afterWord = word;
+            for (var i = 0; i < moveCount; i++) {
+                var x = afterWord.pop();
+                afterWord.unshift(x);
+            }
+            return afterWord;
+        };
+        rubix.print = function(beforeWord, afterWord) {
+            var result = afterWord
+            document.write("Before word :" + beforeWord + " Number :" + this.moveCount + " Direction :" + this.direction + "<br>");
+            document.write("After Word :" + afterWord.join() + "<br>");
+        };
+        rubix.main = function() {
+            var beforeWord = this.input();
+            var isOk = false;
+            var isOk = this.discriminate(this.word, this.moveCount, this.direction);
+            if (isOk) {
+                var result = this.calculate();
+                this.print(beforeWord, result);
+            };
+        };
+        rubix.main();
+    </script>
+</body>
+</html>
