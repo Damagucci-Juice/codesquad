@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang=ko>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+    <h2> 평면 큐브 </h2>
+    <script>
+        gCube = {};
+        gCube.upLine = ["B", "B", "W"];
+        gCube.lftLine = ["G", "G", "B"];
+        gCube.ritLine = ["W", "W", "R"];
+        gCube.botLine = ["R", "R", "G"];
+
+        gCube.input = function() {
+            var input1 = prompt("회전방향을 입력해주세요. \n U/U',L/L',R/R',B/B' \n*공백 불가");
+            var upperCase = input1.toUpperCase();
+            var ordArr = upperCase.split('');
+            for (var i = 0; i < ordArr.length; i++) {
+                if(ordArr[i+1] === "'") {
+                    ordArr[i] += "'";
+                }
+                if(ordArr[i] === "'") {                 // Before : var ordArr = ["U", "'", "R"];
+                    var x = ordArr.splice(i, 1);        // After  : var ordArr = ["U'", "R"];
+                }
+            };
+            return ordArr;
+        };
+        gCube.discriminator = function(order) {
+            var ordArr = order;           
+            var isOrder = false;
+            for (var i = 0; i < ordArr.length; i++) {
+                if (ordArr[i] === "U" || ordArr[i] === "U'") {
+                    isOrder = true;
+                }
+                if (ordArr[i] === "L" || ordArr[i] === "L'") {
+                    isOrder = true;
+                }
+                if (ordArr[i] === "R" || ordArr[i] === "R'") {
+                    isOrder = true;
+                }
+                if (ordArr[i] === "B" || ordArr[i] === "B'") {
+                    isOrder = true;
+                }
+                if (isOrder === false) {
+                alert("다시 입력하세요");
+                }
+            }
+            return isOrder;
+        }
+        gCube.calcaulte = function(order) {
+            for (var i = 0; i < order.length; i++) {
+                if(order[i] === "L") {
+                    this.moveL();
+                }
+                if(order[i] === "L'") {
+                    this.moveLr();
+                }
+                if(order[i] === "R") {
+                    this.moveR();
+                }
+                if(order[i] === "R'") {
+                    this.moveRr();
+                }
+                if(order[i] === "U") {
+                    this.moveU();
+                }
+                if(order[i] === "U'") {
+                    this.moveUr();
+                }
+                if(order[i] === "B") {
+                    this.moveB();
+                }
+                if(order[i] === "B'") {
+                    this.moveBr();
+                }
+                this.print(order[i]);
+            }
+        };
+        gCube.moveL = function() {     // 소문자 r은 reverse  
+            var x = this.lftLine.shift();
+            this.lftLine.push(x);
+            this.upLine[0] = this.lftLine[2];
+            this.botLine[2] = this.lftLine[0];
+        };    
+        gCube.moveLr = function() {       
+            var x = this.lftLine.pop();
+            this.lftLine.unshift(x);
+            this.upLine[0] = this.lftLine[2];
+            this.botLine[2] = this.lftLine[0];
+        };       
+        gCube.moveR = function() {
+            var x = this.ritLine.shift();
+            this.ritLine.push(x);
+            this.upLine[2] = this.ritLine[0];
+            this.botLine[0] = this.ritLine[2];
+        };
+        gCube.moveRr = function() {
+            var x = this.ritLine.pop();
+            this.ritLine.unshift(x);
+            this.upLine[2] = this.ritLine[0];
+            this.botLine[0] = this.ritLine[2];
+        };   
+        gCube.moveU = function() {
+            var x = this.upLine.shift();
+            this.upLine.push(x);
+            this.lftLine[2] = this.upLine[0];
+            this.ritLine[0] = this.upLine[2];
+        };    
+        gCube.moveUr = function() {
+            var x = this.upLine.pop();
+            this.upLine.unshift(x);
+            this.lftLine[2] = this.upLine[0];
+            this.ritLine[0] = this.upLine[2];
+        };
+        gCube.moveB = function() {
+            var x = this.botLine.shift();
+            this.botLine.push(x);
+            this.lftLine[0] = this.botLine[2];
+            this.ritLine[2] = this.botLine[0];
+        };    
+        gCube.moveBr = function() {
+            var x = this.botLine.pop();
+            this.botLine.unshift(x);
+            this.lftLine[0] = this.botLine[2];
+            this.ritLine[2] = this.botLine[0];
+        };   
+        gCube.print = function(input) {
+            document.write("입력값 :" + input + "<br>");
+            document.write(this.upLine[0] + " " + this.upLine[1] + " " + this.upLine[2] + "<br>");
+            document.write(this.lftLine[1] + " " + "C" + " " + this.ritLine[1] + "<br>");
+            document.write(this.botLine[2] + " " + this.botLine[1] + " " + this.botLine[0] + "<br><br>");
+        }; 
+        var main = function() {
+            var userInput = gCube.input();
+            var check = gCube.discriminator(userInput);
+            if (check) {
+                gCube.calcaulte(userInput);
+            } else {
+                main();
+            }
+            return;
+        };
+
+        gCube.print("<초기화면>");
+        setTimeout(() => "", 3000);
+        main();
+    </script>
+</body>
+</html>
