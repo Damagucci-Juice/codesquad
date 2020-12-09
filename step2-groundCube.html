@@ -15,7 +15,7 @@
         gCube.botLine = ["R", "R", "G"];
 
         gCube.input = function() {
-            var input1 = prompt("회전방향을 입력해주세요. \n U/U',L/L',R/R',B/B' \n*공백 불가");
+            var input1 = prompt("회전방향을 입력해주세요. \n U/U',L/L',R/R',B/B' \n*공백 불가 \n*Q를 누르면 종료");
             var upperCase = input1.toUpperCase();
             var ordArr = upperCase.split('');
             console.log(ordArr);
@@ -35,23 +35,16 @@
             console.log(ordArr);
             return ordArr;
         };
+        gCube.exit = function(order) {
+            if (order[0] === "Q") {
+                document.write("bye~");
+                return;
+            }
+        }
         gCube.discriminator = function(order) {
             var ordArr = order;           
             var isOrder = true;
             for (var i = 0; i < ordArr.length; i++) {
-                // if (ordArr[i] === "U" || ordArr[i] === "U'") {
-                //     isOrder = true;
-                // }
-                // if (ordArr[i] === "L" || ordArr[i] === "L'") {
-                //     isOrder = true;
-                // }
-                // if (ordArr[i] === "R" || ordArr[i] === "R'") {
-                //     isOrder = true;
-                // }
-                // if (ordArr[i] === "B" || ordArr[i] === "B'") {
-                //     isOrder = true;
-                // }
-                // if (isOrder === false) {
                 if (ordArr[i] !== "U" && ordArr[i] !== "U'" && ordArr[i] !== "L" && ordArr[i] !== "L'" && ordArr[i] !== "B" && ordArr[i] !== "B'" && ordArr[i] !== "R" && ordArr[i] !== "R'") {
                     isOrder = false;
                     console.log(ordArr[i]);
@@ -146,19 +139,32 @@
             document.write(this.upLine[0] + " " + this.upLine[1] + " " + this.upLine[2] + "<br>");
             document.write(this.lftLine[1] + " " + "C" + " " + this.ritLine[1] + "<br>");
             document.write(this.botLine[2] + " " + this.botLine[1] + " " + this.botLine[0] + "<br><br>");
-        }; 
+        };
+        // gCube.exit = function(input) {
+        //     if (input === "Q") {
+        //         documemt.write("Bye~")
+        //         return;
+        //     }
+        // }
         var main = function() {
             gCube.print("<초기화면>");
-            var userInput = gCube.input();
-            var check = gCube.discriminator(userInput);
-            if (check) {
-                gCube.calcaulte(userInput);
-            } else {
-                main();
+            var userInput = [];
+            for (var i = 0; userInput[0] !== "Q"; i++) {
+                var userInput = gCube.input();
+                if (userInput[0] === "Q") {
+                    alert("프로그램을 종료합니다.");
+                    return;
+                }
+                var check = gCube.discriminator(userInput);
+                if (check) {
+                    var result = gCube.calcaulte(userInput);
+                } else {
+                    alert("오류발생");
+                    return;
+                }
             }
-            return;
         };
-
+        
         gCube.print("<초기화면>");
         setTimeout(() => main(), 1000);
     </script>
