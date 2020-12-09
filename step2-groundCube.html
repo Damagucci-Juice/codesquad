@@ -18,37 +18,51 @@
             var input1 = prompt("회전방향을 입력해주세요. \n U/U',L/L',R/R',B/B' \n*공백 불가");
             var upperCase = input1.toUpperCase();
             var ordArr = upperCase.split('');
-            for (var i = 0; i < ordArr.length; i++) {
+            console.log(ordArr);
+            for (var i = 0; i <= ordArr.length; i++) {
                 if(ordArr[i+1] === "'") {
                     ordArr[i] += "'";
                 }
-                if(ordArr[i] === "'") {                 // Before : var ordArr = ["U", "'", "R"];
-                    var x = ordArr.splice(i, 1);        // After  : var ordArr = ["U'", "R"];
+                if(ordArr[i] === "'") {      // Before : var ordArr = ["U", "'", "R"];
+                    var x = ordArr.splice(i, 1);
+                    i -= 1;                    // After  : var ordArr = ["U'", "R"];
+                }
+                if(ordArr[i]  ===  " ") {      // Before : var ordArr = ["U", "'", "R"];
+                    var x = ordArr.splice(i, 1);                    // After  : var ordArr = ["U'", "R"];
+                    i -= 1;                    // After  : var ordArr = ["U'", "R"];
                 }
             };
+            console.log(ordArr);
             return ordArr;
         };
         gCube.discriminator = function(order) {
             var ordArr = order;           
-            var isOrder = false;
+            var isOrder = true;
             for (var i = 0; i < ordArr.length; i++) {
-                if (ordArr[i] === "U" || ordArr[i] === "U'") {
-                    isOrder = true;
-                }
-                if (ordArr[i] === "L" || ordArr[i] === "L'") {
-                    isOrder = true;
-                }
-                if (ordArr[i] === "R" || ordArr[i] === "R'") {
-                    isOrder = true;
-                }
-                if (ordArr[i] === "B" || ordArr[i] === "B'") {
-                    isOrder = true;
-                }
-                if (isOrder === false) {
-                alert("다시 입력하세요");
+                // if (ordArr[i] === "U" || ordArr[i] === "U'") {
+                //     isOrder = true;
+                // }
+                // if (ordArr[i] === "L" || ordArr[i] === "L'") {
+                //     isOrder = true;
+                // }
+                // if (ordArr[i] === "R" || ordArr[i] === "R'") {
+                //     isOrder = true;
+                // }
+                // if (ordArr[i] === "B" || ordArr[i] === "B'") {
+                //     isOrder = true;
+                // }
+                // if (isOrder === false) {
+                if (ordArr[i] !== "U" && ordArr[i] !== "U'" && ordArr[i] !== "L" && ordArr[i] !== "L'" && ordArr[i] !== "B" && ordArr[i] !== "B'" && ordArr[i] !== "R" && ordArr[i] !== "R'") {
+                    isOrder = false;
+                    console.log(ordArr[i]);
                 }
             }
-            return isOrder;
+            if (isOrder === true) {
+                return isOrder;
+            } else {
+                alert("다시 입력하세요");
+                return isOrder;
+            }
         }
         gCube.calcaulte = function(order) {
             for (var i = 0; i < order.length; i++) {
@@ -134,6 +148,7 @@
             document.write(this.botLine[2] + " " + this.botLine[1] + " " + this.botLine[0] + "<br><br>");
         }; 
         var main = function() {
+            gCube.print("<초기화면>");
             var userInput = gCube.input();
             var check = gCube.discriminator(userInput);
             if (check) {
@@ -145,8 +160,7 @@
         };
 
         gCube.print("<초기화면>");
-        setTimeout(() => "", 3000);
-        main();
+        setTimeout(() => main(), 1000);
     </script>
 </body>
 </html>
