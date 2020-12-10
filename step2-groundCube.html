@@ -38,7 +38,7 @@
         gCube.exit = function(order) {
             if (order[0] === "Q") {
                 document.write("bye~");
-                return;
+                return order;
             }
         }
         gCube.discriminator = function(order) {
@@ -53,7 +53,6 @@
             if (isOrder === true) {
                 return isOrder;
             } else {
-                alert("다시 입력하세요");
                 return isOrder;
             }
         }
@@ -143,32 +142,28 @@
             document.write(this.lftLine[1] + " " + "C" + " " + this.ritLine[1] + "<br>");
             document.write(this.botLine[2] + " " + this.botLine[1] + " " + this.botLine[0] + "<br><br>");
         };
-        var main = function() {
-            gCube.print("<초기화면>");
+        var main = function(userInput) {
             var userInput = [];
             for (var i = 0; userInput[0] !== "Q"; i++) {
                 var userInput = gCube.input();
-                // if (i === 0) {
-                //     gCube.print("<초기화면>");
-                // } 
                 if (userInput[0] === "Q") {
-                    alert("프로그램을 종료합니다.");
+                    gCube.exit(userInput);
                     return;
-                }
+                }    
                 var check = gCube.discriminator(userInput);
                 if (check) {
-                    var result = gCube.calcaulte(userInput);
-                    // setTimeout(() => continue;, 1000);
+                    gCube.calcaulte(userInput);
+                    setTimeout(() => main(), 1000, userInput);
                     break;
                 } else {
-                    alert("오류가 발생하였습니다. \n프로그램을 종료합니다.");
+                    alert("다른 값을 입력하였습니다. 프로그램을 종료합니다.");
                     return;
                 }
             }
-            setTimeout(() => main(), 1000);
         };
         
         var init = gCube.print("<초기화면>");
+        document.write("값을 넘기면 사라집니다.");
         setTimeout(() => main(), 1000);
 
 
