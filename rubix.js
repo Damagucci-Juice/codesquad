@@ -4,19 +4,14 @@ var check = document.getElementById('check');
 var count = document.getElementById('count');
 var time = document.getElementById('time');
 
-
-
-
-
-
-
-
 var cube = {
     'faces': [left, bottom, front, back, top, right],
     'colors': ['W', 'B', 'G', 'Y', 'O', 'R'],
     'orders': [],
     'current': 0
 };
+
+cube.startTime = Date.now();
 
 cube.input = function() {
     const inputString = input.value;
@@ -41,3 +36,12 @@ cube.switch = function () {
     }
 };
 cube.switch();
+
+
+
+var updateTime = function () {
+    var now = Date.now() - cube.startTime;
+    time.innerHTML = (now / 1000) + " s";
+};
+
+var x = setInterval(updateTime, 50);
