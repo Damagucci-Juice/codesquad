@@ -9,12 +9,16 @@ var check = document.getElementById('check');
 var count = document.getElementById('count');
 var time = document.getElementById('time');
 
+
 var cube = {
     'faces': [bottom, left, front, upper, back, right],
     'colors': ['W', 'B', 'G', 'Y', 'O', 'R'],
     'orders': [],
     'current': 0
 };
+
+cube.startTime = Date.now();
+
 cube.makeFace = function() {
     for (let i = 0; i < this.faces.length; i++){
        this.faces[i] = new Array(3)
@@ -26,7 +30,7 @@ cube.makeFace = function() {
 };
 cube.makeFace();
 
-cube.printFace = function(n) {
+cube.printInitFace = function(n) {
     const line = this.faces[n];
     let table = "";
     for (let i = 0; i < 3; i ++) {
@@ -40,12 +44,12 @@ cube.printFace = function(n) {
 };
 
 cube.fill = function() {
-    bottom.innerHTML = this.printFace(0);
-    left.innerHTML = this.printFace(1);
-    front.innerHTML = this.printFace(2);
-    upper.innerHTML = this.printFace(3);
-    back.innerHTML = this.printFace(4);
-    right.innerHTML = this.printFace(5);
+    bottom.innerHTML = this.printInitFace(0);
+    left.innerHTML = this.printInitFace(1);
+    front.innerHTML = this.printInitFace(2);
+    upper.innerHTML = this.printInitFace(3);
+    back.innerHTML = this.printInitFace(4);
+    right.innerHTML = this.printInitFace(5);
 };
 cube.fill();
 
@@ -58,28 +62,12 @@ cube.checkFin = function() {
         for (let i = 0; i < arrFace.length - 1; i++) {
             if (arrFace[i] !== arrFace[i+1]) {
                 isSame = false;
+                return isSame;
             }
         }
     }
-    if (isSame) {
-        check.innerHTML = "축하합니다. 큐브를 모두 맞췄습니다.";
-        count.innerHTML = "조작횟수 : " + this.current;
-    } else if (!isSame) {
-        check.innerHTML = "";
-    }
+    return isSame;
 };
-
-cube.checkFin();
-
-cube.startTime = Date.now();
-
-cube.input = function() {
-    const inputString = input.value;
-    this.orders = inputString.toUpperCase().split('');
-};
-cube.input();
-
-
 cube.orderArrange = function () {
     for (let i = 0; i < this.orders.length; i++) {
         switch (this.orders[i]) {
@@ -92,20 +80,85 @@ cube.orderArrange = function () {
                 this.orders[i] = this.orders[i-1];
                 break;
             default:
-                console.log(this.orders[i]);
+                break;
         }
     }
 };
-cube.orderArrange();
+
+cube.orderInit = function () {
+    this.orders = [];
+};
+
+cube.input = function() {
+    const inputString = input.value;
+    this.orders = inputString.toUpperCase().split('');
+    this.orderArrange();
+};
+
+cube.progress = function() {
+    if (cube.checkFin() === true) {
+        check.innerHTML = "축하합니다. 큐브를 모두 맞췄습니다.";
+        clearInterval(x);
+        count.innerHTML = "조작횟수 : " + this.current;
+    }
+    if (cube.checkFin() === false) {
+        cube.current++;
+        cube.orderInit();
+    }
+};
 
 
+//event handler 
+cube.exit = function () {
+    check.innerHTML = "프로그램을 종료합니다.";
+    count.innerHTML = "조작횟수 : " + this.current;
+    clearInterval(x);
+};
+
+cube.calculate = function() {
+    cube.input();
+    for (let i = 0; i < this.orders.length; i++) {
+        switch (this.orders[i]) {
+            case "F":
+                console.log('F');
+                break;
+            case "F'":
+                console.log('F\'');
+                break;
+            case "R":
+                console.log('R');
+                break;
+            case "R'":
+                console.log('R\'');
+                break;
+            case "U":
+                console.log('U');
+                break;
+            case "U'":
+                console.log('U\'');
+                break;
+            case "L":
+                console.log('L');
+                break;
+            case "L'":
+                console.log('L\'');
+                break;
+            case "Q":
+                this.exit();
+                break;
+            default:
+                alert("F,F',U,U',R,R',L,L' 만을 입력하세요")
+        }
+    }
+};
 
 var shuffle = function() {
     console.log('random');
 };
 
 var execute = function() {
-    console.log('execute');
+    cube.calculate();
+    cube.progress();
 };
 
 var updateTime = function () {
