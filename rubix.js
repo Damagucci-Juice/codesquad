@@ -5,11 +5,23 @@ var count = document.getElementById('count');
 var time = document.getElementById('time');
 
 var cube = {
-    'faces': [left, bottom, front, back, top, right],
+    'faces': [left, bottom, front, back, upper, right],
     'colors': ['W', 'B', 'G', 'Y', 'O', 'R'],
     'orders': [],
     'current': 0
 };
+cube.makeFace = function() {
+    for (let i = 0; i < this.faces.length; i++){
+       this.faces[i] = new Array(3)
+       for (let j = 0; j < this.faces[i].length; j++) {
+           this.faces[i][j] = new Array(this.colors[i], 
+            this.colors[i], this.colors[i]);
+       }
+       console.log(this.faces[i]);
+    }
+};
+cube.makeFace();
+
 
 cube.startTime = Date.now();
 
@@ -18,6 +30,12 @@ cube.input = function() {
     this.orders = inputString.toUpperCase().split('');
 };
 cube.input();
+
+cube.checkGood = function(){
+    // for (let i = 0; i < this.faces.length; i++) {
+    //     if (this.faces[i].innerHTML ===  
+    // }
+};
 
 cube.switch = function () {
     for (let i = 0; i < this.orders.length; i++) {
@@ -38,6 +56,14 @@ cube.switch = function () {
 cube.switch();
 
 
+
+var shuffle = function() {
+    console.log('random');
+};
+
+var execute = function() {
+    console.log('execute');
+};
 
 var updateTime = function () {
     var now = Date.now() - cube.startTime;
