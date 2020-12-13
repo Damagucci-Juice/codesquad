@@ -84,7 +84,6 @@ cube.orderArrange = function () {
         }
     }
 };
-
 cube.orderInit = function () {
     this.orders = [];
 };
@@ -94,7 +93,11 @@ cube.input = function() {
     this.orders = inputString.toUpperCase().split('');
     this.orderArrange();
 };
-
+cube.exit = function () {
+    check.innerHTML = "프로그램을 종료합니다.";
+    count.innerHTML = "조작횟수 : " + this.current;
+    clearInterval(x);
+};
 cube.progress = function() {
     if (cube.checkFin() === true) {
         check.innerHTML = "축하합니다. 큐브를 모두 맞췄습니다.";
@@ -106,15 +109,6 @@ cube.progress = function() {
         cube.orderInit();
     }
 };
-
-
-//event handler 
-cube.exit = function () {
-    check.innerHTML = "프로그램을 종료합니다.";
-    count.innerHTML = "조작횟수 : " + this.current;
-    clearInterval(x);
-};
-
 cube.calculate = function() {
     cube.input();
     for (let i = 0; i < this.orders.length; i++) {
@@ -152,6 +146,30 @@ cube.calculate = function() {
     }
 };
 
+
+//move cubes
+
+/*
+    'faces': [bottom, left, front, upper, back, right],
+               0        1      2    3       4     5
+*/
+
+var upMove = function() {
+    let temp = [];
+    temp = this.faces[2].shift();
+};
+var upReverseMove = function() {};
+var frontMove = function() {};
+var frontReverseMove = function() {};
+var leftMove = function() {};
+var leftReverseMove = function() {};
+var rightMove = function() {};
+var rightReverseMove = function() {};
+
+
+
+
+//event handler 
 var shuffle = function() {
     console.log('random');
 };
