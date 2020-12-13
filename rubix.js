@@ -1,11 +1,16 @@
-var face = document.getElementsByTagName('td');
+var left = document.getElementById('left');
+var bottom = document.getElementById('bottom');
+var front = document.getElementById('front');
+var back = document.getElementById('back');
+var upper = document.getElementById('upper');
+var right = document.getElementById('right');
 var input = document.getElementById('order');
 var check = document.getElementById('check');
 var count = document.getElementById('count');
 var time = document.getElementById('time');
 
 var cube = {
-    'faces': [left, bottom, front, back, upper, right],
+    'faces': [bottom, left, front, upper, back, right],
     'colors': ['W', 'B', 'G', 'Y', 'O', 'R'],
     'orders': [],
     'current': 0
@@ -17,10 +22,34 @@ cube.makeFace = function() {
            this.faces[i][j] = new Array(this.colors[i], 
             this.colors[i], this.colors[i]);
        }
-       console.log(this.faces[i]);
     }
 };
 cube.makeFace();
+
+cube.printFace = function(n) {
+    const line = this.faces[n];
+    let table = "";
+    for (let i = 0; i < 3; i ++) {
+        for (let j = 0; j < 3; j++) {
+            table += line[i][j];
+            table += ' ';
+        }
+        table += '<br>';
+    }
+    return table;
+}
+cube.fill = function() {
+    bottom.innerHTML = this.printFace(0);
+    left.innerHTML = this.printFace(1);
+    front.innerHTML = this.printFace(2);
+    upper.innerHTML = this.printFace(3);
+    back.innerHTML = this.printFace(4);
+    right.innerHTML = this.printFace(5);
+};
+cube.fill();
+
+
+
 
 
 cube.startTime = Date.now();
@@ -32,12 +61,10 @@ cube.input = function() {
 cube.input();
 
 cube.checkGood = function(){
-    // for (let i = 0; i < this.faces.length; i++) {
-    //     if (this.faces[i].innerHTML ===  
-    // }
+
 };
 
-cube.switch = function () {
+cube.orderArrange = function () {
     for (let i = 0; i < this.orders.length; i++) {
         switch (this.orders[i]) {
             case '\'':
@@ -53,7 +80,7 @@ cube.switch = function () {
         }
     }
 };
-cube.switch();
+cube.orderArrange();
 
 
 
