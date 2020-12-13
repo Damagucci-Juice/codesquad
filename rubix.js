@@ -4,7 +4,7 @@ var front = document.getElementById('front');
 var back = document.getElementById('back');
 var upper = document.getElementById('upper');
 var right = document.getElementById('right');
-var input = document.getElementById('order');
+var input = document.getElementById('input');
 var check = document.getElementById('check');
 var count = document.getElementById('count');
 var time = document.getElementById('time');
@@ -37,7 +37,8 @@ cube.printFace = function(n) {
         table += '<br>';
     }
     return table;
-}
+};
+
 cube.fill = function() {
     bottom.innerHTML = this.printFace(0);
     left.innerHTML = this.printFace(1);
@@ -48,9 +49,27 @@ cube.fill = function() {
 };
 cube.fill();
 
+cube.checkFin = function() {
+    var isSame = true;
+    for(let n = 0; n < this.faces.length; n++) {
+        const face = this.faces[n];
+        const strFace = face.join();
+        const arrFace = strFace.split(',');
+        for (let i = 0; i < arrFace.length - 1; i++) {
+            if (arrFace[i] !== arrFace[i+1]) {
+                isSame = false;
+            }
+        }
+    }
+    if (isSame) {
+        check.innerHTML = "축하합니다. 큐브를 모두 맞췄습니다.";
+        count.innerHTML = "조작횟수 : " + this.current;
+    } else if (!isSame) {
+        check.innerHTML = "";
+    }
+};
 
-
-
+cube.checkFin();
 
 cube.startTime = Date.now();
 
@@ -60,9 +79,6 @@ cube.input = function() {
 };
 cube.input();
 
-cube.checkGood = function(){
-
-};
 
 cube.orderArrange = function () {
     for (let i = 0; i < this.orders.length; i++) {
@@ -97,4 +113,4 @@ var updateTime = function () {
     time.innerHTML = (now / 1000) + " s";
 };
 
-var x = setInterval(updateTime, 50);
+var x = setInterval(updateTime, 100);
